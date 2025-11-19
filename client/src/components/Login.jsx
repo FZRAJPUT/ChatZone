@@ -27,12 +27,9 @@ const Login = () => {
         toast.success("Login successful!");
         localStorage.setItem("token", data.token);
         setTimeout(() => navigate("/"), 1200);
-      } else {
-        toast.error(data.message || "Invalid credentials!");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong. Please try again!");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

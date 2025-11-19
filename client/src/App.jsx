@@ -11,11 +11,9 @@ import FriendRequests from "./components/FriendRequests";
 function App() {
   return (
     <Routes>
-      {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* Protected routes */}
       <Route
         path="/"
         element={
@@ -24,6 +22,7 @@ function App() {
           </PrivateRoute>
         }
       />
+      
       <Route
         path="/requests"
         element={

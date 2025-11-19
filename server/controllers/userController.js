@@ -13,30 +13,30 @@ export const register = async (req, res) => {
         .json({ success: false, message: "Username, email, and password are required" });
     }
 
-    const isExist = await User.findOne({ $or: [{ username }, { email }] });
+    const isExist = await User.findOne({ email });
     if (isExist) {
       return res
         .status(409)
-        .json({ success: false, message: "Username or email already in use" });
+        .json({ success: false, message: "Email already Registered" });
     }
 
     const hashPass = await bcrypt.hash(password, 10);
 
     const user = new User({
-      username,
+      username: username.toLowerCase(),
       email,
       password: hashPass,
     });
 
-    await user.save();
+    let user1 = await user.save();
 
     return res
       .status(201)
-      .json({ success: true, message: "Registration successful" });
+      .json({ success: true, message: "Registration successful" ,userId:user1._id });
 
   } catch (error) {
     console.error("Register Error:", error.message);
-    return res.status(500).json({ success: false, message: "Server error" });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -61,7 +61,7 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res
         .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+        .json({ success: false, message: "Invalid Password" });
     }
 
     const token = jwt.sign(
@@ -356,5 +356,49 @@ export const sendRequest = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Something went wrong" });
+  }
+};
+
+export const setupProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { bio } = req.body;
+
+    console.log(userId)
+
+    if (!bio && !req.file.buffer) {
+      return res.status(400).json({ message: "Nothing to update." });
+    } 
+let file = req.file
+let profilePic
+ if (file) {
+      const uploadedImage = await imagekit.upload({
+        file: file.buffer.toString("base64"),
+        fileName: file.originalname,
+        folder: "/profile_pics",
+      });
+      profilePic = uploadedImage.url;
+    }
+    // Update user
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        ...(bio && { bio }),
+        ...(profilePic && { profilePic }),
+      },
+      { new: true } // returns updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({
+      message: "Profile setup successful.",
+      success:true
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error.", error: error.message });
   }
 };

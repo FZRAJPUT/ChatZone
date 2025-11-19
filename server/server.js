@@ -6,6 +6,7 @@ import connectDB from './config/database.js';
 import dotenv from 'dotenv'
 import userRouter from './routes/userRoutes.js';
 import User from './models/userModel.js';
+import msgRouter from './routes/messageRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api",userRouter)
+app.use("/api",msgRouter)
 
 app.get("/", (req, res) => {
     res.json({ message: "Hello from socket server....." })

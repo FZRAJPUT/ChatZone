@@ -35,7 +35,6 @@ const Register = () => {
     return () => clearTimeout(timeout);
   }, [username]);
 
-  // ✅ Handle Registration
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -63,14 +62,16 @@ const Register = () => {
       );
 
       if (data.success) {
-        toast.success("Registration successful! Redirecting to login...");
+        toast.success("Registration successful!");
+        setTimeout(() => {
+        }, 1500);
         setTimeout(() => navigate("/login"), 1500);
       } else {
-        toast.error(data.message || "Registration failed!");
+        toast.error(data.response.message || "Registration failed!");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong. Please try again!");
+      console.error(error.response.data.message);
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }
@@ -92,15 +93,14 @@ const Register = () => {
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
             />
             {checking ? (
               <p className="text-sm text-gray-500 mt-1">
                 Checking availability...
               </p>
             ) : isAvailable === true ? (
-              <p className="text-sm text-green-600 mt-1">
-                Username available
-              </p>
+              ""
             ) : isAvailable === false ? (
               <p className="text-sm text-red-500 mt-1">Username taken</p>
             ) : null}
@@ -112,6 +112,8 @@ const Register = () => {
             className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+
           />
 
           <input
@@ -120,16 +122,17 @@ const Register = () => {
             className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+
           />
 
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 rounded-lg text-white font-semibold transition duration-200 flex items-center justify-center gap-2 ${
-              loading
+            className={`w-full py-3 rounded-lg text-white font-semibold transition duration-200 flex items-center justify-center gap-2 ${loading
                 ? "bg-indigo-300 cursor-not-allowed"
                 : "bg-indigo-600 hover:bg-indigo-700"
-            }`}
+              }`}
           >
             {loading ? (
               <>

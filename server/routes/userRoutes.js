@@ -9,6 +9,7 @@ import {
     rejectRequest,
     searchUsers,
     sendRequest,
+    setupProfile,
     updateProfile,
 } from "../controllers/userController.js";
 import verifyToken from "../utils/verifyToken.js";
@@ -38,5 +39,6 @@ userRouter.post("/send-request",verifyToken,sendRequest);
 userRouter.post("/cancel-request", verifyToken, cancelRequest);
 userRouter.post("/accept-request", verifyToken, acceptRequest);
 userRouter.post("/reject-request", verifyToken, rejectRequest);
+userRouter.put("/setup/:userId",upload.single("profilePic"),setupProfile)
 
 export default userRouter;

@@ -24,7 +24,7 @@ const NotFoundPage = () => {
       </button>
 
       <div className="mt-10 flex gap-3 text-gray-500 text-sm">
-        <span>💬 ChatApp</span>
+        <span>Chatzone</span>
         <span>•</span>
         <span>Connecting People, Instantly</span>
       </div>

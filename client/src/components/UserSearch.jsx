@@ -69,7 +69,7 @@ const UserSearch = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 rounded-2xl">
+    <div className="w-full max-w-2xl p-6 rounded-2xl">
       <h2 className="text-2xl font-bold text-center mb-4 text-indigo-600">
        Search Users
       </h2>

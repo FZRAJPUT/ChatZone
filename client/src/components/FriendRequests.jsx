@@ -37,7 +37,7 @@ const FriendRequests = () => {
   const handleAccept = async (userId) => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/accept-request`,
+        `${import.meta.env.VITE_API_URL}/accept-request`,
         { requesterId: userId },
         { headers: { Authorization: `Bearer ${token}` } }
       );

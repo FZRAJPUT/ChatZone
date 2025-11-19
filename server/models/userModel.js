@@ -22,11 +22,11 @@ const userSchema = new mongoose.Schema(
     },
     profilePic: {
       type: String,
-      default: "",
+      default: "https://ik.imagekit.io/fzrajput/profile_pics/default_profile",
     },
     bio: {
       type: String,
-      default: "",
+      default: "I'm using chatzone..",
     },
     isOnline: {
       type: Boolean,

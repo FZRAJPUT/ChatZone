@@ -3,6 +3,8 @@ import { LogOut, MessageCircle, Upload, Edit3, Save, X } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useChat } from '../../context/chatContext';
+import toast, { Toaster } from "react-hot-toast";
+
 
 const LeftPanel = ({ username, profilePic, userBio }) => {
   const navigate = useNavigate();
@@ -41,10 +43,9 @@ const LeftPanel = ({ username, profilePic, userBio }) => {
           },
         }
       );
-      alert('Profile picture updated!');
+      toast.success('Profile picture updated!');
     } catch (error) {
-      console.log(error.message);
-      alert('Error updating profile picture');
+      toast.error('Error updating profile picture');
     } finally {
       setLoading(false);
     }
@@ -61,15 +62,14 @@ const LeftPanel = ({ username, profilePic, userBio }) => {
       );
 
       if (!res.data.success) {
-        alert(res.data.message);
+        toast.error(res.data.message);
         return;
       }
 
-      alert('Profile updated successfully!');
+      toast.success('Profile updated successfully!');
       setEditMode(false);
     } catch (error) {
-      console.log(error.message);
-      alert('Error updating profile details');
+      toast.error('Error updating profile details');
     } finally {
       setLoading(false);
     }
@@ -86,11 +86,11 @@ const LeftPanel = ({ username, profilePic, userBio }) => {
   };
 
   return (
-    <div className="w-full h-full bg-gray-50 p-6 flex flex-col justify-center items-center text-center shadow-sm">
-      {/* Profile Picture */}
+    <div className="w-full lg:h-full bg-gray-50 p-6 flex flex-col justify-center items-center text-center shadow-sm">
+      <Toaster position="top-center" />
       <div className="relative group">
         <img
-          src={preview || profilePic || "/default-avatar.png"}
+          src={preview || profilePic}
           alt={username}
           className="w-24 h-24 rounded-full object-cover border-4 border-indigo-200 shadow-md"
         />
