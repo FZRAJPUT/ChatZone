@@ -131,7 +131,7 @@ const FriendRequests = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 rounded-2xl mt-6 w-[95%] sm:w-full">
+    <div className="max-w-2xl  mx-auto p-4 rounded-2xl mt-6 w-[98%] sm:w-full">
       <h2 className="text-2xl font-bold mb-4 text-indigo-600 text-center">
         Friend Requests
       </h2>

@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import imagekit from "../utils/imagekit.js";
+import otpModel from "../models/otpModel.js";
+import { sendOTPEmail } from "../utils/sendOTP.js";
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -20,25 +22,71 @@ export const register = async (req, res) => {
         .json({ success: false, message: "Email already Registered" });
     }
 
+    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+
     const hashPass = await bcrypt.hash(password, 10);
 
-    const user = new User({
+    const user = new otpModel({
       username: username.toLowerCase(),
       email,
       password: hashPass,
+      otp: otpCode
     });
 
     let user1 = await user.save();
 
-    return res
-      .status(201)
-      .json({ success: true, message: "Registration successful" ,userId:user1._id });
+    let response = await sendOTPEmail(email, otpCode);
+
+    if (!response.success) {
+      return res.json({
+        message: "Email not Sent...",
+        success: false
+      })
+    }
+
+    return res.json({
+      message: `OTP sent to ${email}`,
+      success: true
+    });
 
   } catch (error) {
     console.error("Register Error:", error.message);
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const verifyOTP = async (req, res) => {
+  const { email, otp } = req.body;
+
+  console.log(email,otp)
+
+  try {
+    const record = await otpModel.findOne({ email });
+    if (!record) {
+      return res.json({ success: false, message: "OTP expired or invalid" });
+    }
+
+    if (Number(record.otp) !== Number(otp)) {
+      return res.json({ success: false, message: "Invalid OTP" });
+    }
+
+    const newUser = new User({
+      username: record.username,
+      email: record.email,
+      password: record.password,
+    });
+
+    await newUser.save();
+    await otpModel.deleteOne({ email });
+    return res.json({ success: true, message: "User registered successfully" });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: "Failed to verify OTP",
+      error: error.message,
+    });
+  }
+}
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
@@ -99,10 +147,10 @@ export const getMe = async (req, res) => {
     }
 
     const user = await User.findById(req.user.id)
-  .select("-password")
-  .populate("friends", "username email profilePic isOnline lastSeen")
-  .populate("friendRequests.sent", "username email profilePic isOnline lastSeen")
-  .populate("friendRequests.received", "username email profilePic isOnline lastSeen");
+      .select("-password")
+      .populate("friends", "username email profilePic isOnline lastSeen")
+      .populate("friendRequests.sent", "username email profilePic isOnline lastSeen")
+      .populate("friendRequests.received", "username email profilePic isOnline lastSeen");
 
 
     if (!user) {
@@ -368,10 +416,10 @@ export const setupProfile = async (req, res) => {
 
     if (!bio && !req.file.buffer) {
       return res.status(400).json({ message: "Nothing to update." });
-    } 
-let file = req.file
-let profilePic
- if (file) {
+    }
+    let file = req.file
+    let profilePic
+    if (file) {
       const uploadedImage = await imagekit.upload({
         file: file.buffer.toString("base64"),
         fileName: file.originalname,
@@ -395,7 +443,7 @@ let profilePic
 
     res.status(200).json({
       message: "Profile setup successful.",
-      success:true
+      success: true
     });
   } catch (error) {
     console.error(error);

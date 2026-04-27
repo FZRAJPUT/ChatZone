@@ -25,14 +25,18 @@ const Chat = ({ socket, room, userName }) => {
   };
 
   useEffect(() => {
-    socket.on("recieveMSG", (data) => {
-      setMessageList((list) => [...list, data]);
-    });
+  if (!socket) return;
 
-    return () => {
-      socket.off("recieveMSG");
-    };
-  }, [socket]);
+  const handleMessage = (data) => {
+    setMessages((prev) => [...prev, data]);
+  };
+
+  socket.on("recieveMSG", handleMessage);
+
+  return () => {
+    socket.off("recieveMSG", handleMessage);
+  };
+}, [socket]);
 
   // Auto scroll whenever new message is added
   useEffect(() => {

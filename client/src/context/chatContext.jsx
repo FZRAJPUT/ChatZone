@@ -3,12 +3,12 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
-  const [token,setToken] = useState("")
+  const [token, setToken] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {
     setToken(localStorage.getItem("token"))
-  },[])
-
+  }, [])
+  
   return (
     <ChatContext.Provider value={{ token }}>
       {children}

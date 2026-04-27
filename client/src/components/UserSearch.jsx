@@ -69,7 +69,7 @@ const UserSearch = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl p-6 rounded-2xl">
+    <div className="w-full max-w-2xl p-0 rounded-2xl">
       <h2 className="text-2xl font-bold text-center mb-4 text-indigo-600">
        Search Users
       </h2>
@@ -101,12 +101,19 @@ const UserSearch = () => {
               key={user._id}
               className="flex items-center justify-between p-4 border rounded-xl hover:bg-indigo-50 transition-all"
             >
+              <span
+                  className={`w-3 h-3 relative lg:static left-12 border-[1px] border-gray-50 top-4 lg:top-0 lg:left-0 rounded-full ${
+                    user.isOnline ? "bg-green-500" : "bg-gray-400"
+                  }`}
+                  title={user.isOnline ? "Online" : "Offline"}
+                ></span>
               <div className="flex items-center gap-3">
                 <img
                   src={user.profilePic || "/default-avatar.png"}
                   alt={user.username}
                   className="w-12 h-12 rounded-full object-cover border"
                 />
+                
                 <div>
                   <p className="font-semibold text-gray-800">{user.username}</p>
                   <p className="text-sm text-gray-500 line-clamp-1">
@@ -116,12 +123,7 @@ const UserSearch = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <span
-                  className={`w-3 h-3 rounded-full ${
-                    user.isOnline ? "bg-green-500" : "bg-gray-400"
-                  }`}
-                  title={user.isOnline ? "Online" : "Offline"}
-                ></span>
+                
                 <button
                   className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all"
                   onClick={() => handleAddFriend(user)}

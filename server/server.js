@@ -29,45 +29,39 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("joinroom", (roomId) => {
+
+  socket.on("joinRoom", (roomId) => {
     socket.join(roomId);
     console.log(`SocketId: ${socket.id} joined RoomId: ${roomId}`);
   });
 
-  socket.on("online", async (userId) => {
-    try {
-      console.log("User online:", userId);
-      socket.userId = userId;
-      if (userId) {
-        await User.findByIdAndUpdate(
-          userId,
-          { isOnline: true },
-          { new: true }
-        );
-      }
-    } catch (err) {
-      console.error("Error setting user online:", err.message);
-    }
+  socket.on("sendMessage", (data) => {
+    console.log("Incoming message:", data);
+
+    io.to(data.roomId).emit("recieveMSG", data);
   });
 
-  socket.on("sendMessage", (data) => {
-    socket.to(data.room).emit("recieveMSG", data);
+  socket.on("online", async (userId) => {
+    try {
+      socket.userId = userId;
+      if (userId) {
+        await User.findByIdAndUpdate(userId, { isOnline: true });
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
   });
 
   socket.on("disconnect", async () => {
     try {
       if (socket.userId) {
-        console.log("User disconnected:", socket.userId);
-        await User.findByIdAndUpdate(
-          socket.userId,
-          { isOnline: false },
-          { new: true }
-        );
+        await User.findByIdAndUpdate(socket.userId, { isOnline: false });
       }
     } catch (err) {
-      console.error("Error setting user offline:", err.message);
+      console.error(err.message);
     }
   });
+
 });
 
 

@@ -65,7 +65,9 @@ const Register = () => {
         toast.success("Registration successful!");
         setTimeout(() => {
         }, 1500);
-        setTimeout(() => navigate("/login"), 1500);
+        setTimeout(() => {
+          navigate("/verify", { state: { email } });
+        }, 1500);
       } else {
         toast.error(data.response.message || "Registration failed!");
       }
@@ -130,8 +132,8 @@ const Register = () => {
             type="submit"
             disabled={loading}
             className={`w-full py-3 rounded-lg text-white font-semibold transition duration-200 flex items-center justify-center gap-2 ${loading
-                ? "bg-indigo-300 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700"
+              ? "bg-indigo-300 cursor-not-allowed"
+              : "bg-indigo-600 hover:bg-indigo-700"
               }`}
           >
             {loading ? (

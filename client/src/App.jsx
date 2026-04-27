@@ -7,12 +7,14 @@ import JoinRoom from "./components/JoinRoom";
 import NotFoundPage from "./pages/NotFound";
 import UserSearch from "./components/UserSearch";
 import FriendRequests from "./components/FriendRequests";
+import OtpScreen from "./components/OtpScreen";
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/verify" element={<OtpScreen />} />
 
       <Route
         path="/"

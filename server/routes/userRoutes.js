@@ -11,6 +11,7 @@ import {
     sendRequest,
     setupProfile,
     updateProfile,
+    verifyOTP,
 } from "../controllers/userController.js";
 import verifyToken from "../utils/verifyToken.js";
 import User from "../models/userModel.js";
@@ -22,6 +23,7 @@ const userRouter = express.Router();
 
 userRouter.post("/register", register);
 userRouter.post("/login", login);
+userRouter.post("/verify", verifyOTP);
 userRouter.get("/get-users", verifyToken, getAllUser);
 userRouter.get("/me", verifyToken, getMe);
 userRouter.get("/search", verifyToken, searchUsers);

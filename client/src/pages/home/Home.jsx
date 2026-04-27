@@ -142,7 +142,7 @@ const Home = () => {
         <h2 className="text-xl font-bold mb-3">
           {selectedFriend ? `Chat with ${selectedFriend.username.toUpperCase()}` : "Welcome to ChatZone"}
         </h2>
-        <ChatScreen friendId={selectedFriend?._id} />
+        <ChatScreen friendId={selectedFriend?._id} myId={userDetails?._id} />
       </div>
 
       {/* UserSearch Overlay */}
@@ -162,7 +162,7 @@ const Home = () => {
 
       {/* FriendRequests Overlay */}
       {requestsOpen && (
-        <div className="absolute inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+        <div className="absolute h-[100dvh] inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
           <div className="relative w-[90%] max-w-3xl bg-white rounded-2xl shadow-2xl p-6 animate-fadeIn">
             <button
               onClick={() => setRequestsOpen(false)}

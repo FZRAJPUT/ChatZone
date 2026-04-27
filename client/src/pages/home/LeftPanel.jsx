@@ -3,8 +3,6 @@ import { LogOut, MessageCircle, Upload, Edit3, Save, X } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useChat } from '../../context/chatContext';
-import toast, { Toaster } from "react-hot-toast";
-
 
 const LeftPanel = ({ username, profilePic, userBio }) => {
   const navigate = useNavigate();
@@ -43,9 +41,7 @@ const LeftPanel = ({ username, profilePic, userBio }) => {
           },
         }
       );
-      toast.success('Profile picture updated!');
     } catch (error) {
-      toast.error('Error updating profile picture');
     } finally {
       setLoading(false);
     }
@@ -62,14 +58,11 @@ const LeftPanel = ({ username, profilePic, userBio }) => {
       );
 
       if (!res.data.success) {
-        toast.error(res.data.message);
         return;
       }
 
-      toast.success('Profile updated successfully!');
       setEditMode(false);
     } catch (error) {
-      toast.error('Error updating profile details');
     } finally {
       setLoading(false);
     }
@@ -87,7 +80,6 @@ const LeftPanel = ({ username, profilePic, userBio }) => {
 
   return (
     <div className="w-full lg:h-full bg-gray-50 p-6 flex flex-col justify-center items-center text-center shadow-sm">
-      <Toaster position="top-center" />
       <div className="relative group">
         <img
           src={preview || profilePic}
