@@ -32,12 +32,9 @@ io.on("connection", (socket) => {
 
   socket.on("joinRoom", (roomId) => {
     socket.join(roomId);
-    console.log(`SocketId: ${socket.id} joined RoomId: ${roomId}`);
   });
 
   socket.on("sendMessage", (data) => {
-    console.log("Incoming message:", data);
-
     io.to(data.roomId).emit("recieveMSG", data);
   });
 
@@ -61,11 +58,11 @@ io.on("connection", (socket) => {
       console.error(err.message);
     }
   });
-
 });
 
+const PORT = 4002 || process.env.PORT
 
-server.listen(4002, () => {
+server.listen(PORT, () => {
     connectDB()
-    console.log("Server is running on http://localhost:4002")
+    console.log("Server is running on "+ PORT)
 })

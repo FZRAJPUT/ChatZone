@@ -57,9 +57,6 @@ export const register = async (req, res) => {
 
 export const verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
-
-  console.log(email,otp)
-
   try {
     const record = await otpModel.findOne({ email });
     if (!record) {
@@ -80,10 +77,10 @@ export const verifyOTP = async (req, res) => {
     await otpModel.deleteOne({ email });
     return res.json({ success: true, message: "User registered successfully" });
   } catch (error) {
+    console.log(error.message)
     res.json({
       success: false,
       message: "Failed to verify OTP",
-      error: error.message,
     });
   }
 }
@@ -411,8 +408,6 @@ export const setupProfile = async (req, res) => {
   try {
     const { userId } = req.params;
     const { bio } = req.body;
-
-    console.log(userId)
 
     if (!bio && !req.file.buffer) {
       return res.status(400).json({ message: "Nothing to update." });

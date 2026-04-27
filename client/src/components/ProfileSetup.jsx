@@ -30,22 +30,15 @@ const ProfileSetup = ({ userId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userId = location.state?.userId;
-    console.log(userId)
     try {
       setLoading(true);
-
       const data = new FormData();
       data.append("bio", formData.bio);
       data.append("profilePic", formData.profilePic);
-
       const res = await axios.put(`${import.meta.env.VITE_API_URL}/setup/${userId}`, data);
-
-      console.log(res.data)
-
       toast.success("Profile setup completed successfully!");
       navigate("/login");
     } catch (error) {
-      console.error(error);
       toast.error("Error while updating profile!");
     } finally {
       setLoading(false);

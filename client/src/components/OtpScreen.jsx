@@ -68,7 +68,6 @@ const OtpScreen = () => {
             }, 1500);
 
         } catch (error) {
-            console.log(error);
             toast.error(error.response?.data?.message || error.message);
         } finally {
             setLoading(false);

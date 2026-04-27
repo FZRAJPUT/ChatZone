@@ -72,7 +72,6 @@ const Register = () => {
         toast.error(data.response.message || "Registration failed!");
       }
     } catch (error) {
-      console.error(error.response.data.message);
       toast.error(error.response.data.message);
     } finally {
       setLoading(false);

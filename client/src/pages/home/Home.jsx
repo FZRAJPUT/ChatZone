@@ -31,7 +31,6 @@ const Home = () => {
         socket.emit("online", res.data.user._id);
       }
     } catch (error) {
-      console.log(error.message);
       navigate("/login");
     }
   };

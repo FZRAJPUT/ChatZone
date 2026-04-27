@@ -25,7 +25,6 @@ const ChatScreen = ({ friendId, myId }) => {
         `${import.meta.env.VITE_API_URL}/messages/${friendId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(res.data.messages || "no messages")
       setMessages(res.data.messages);
     } catch (err) {
       toast.error(err.message)
@@ -45,7 +44,7 @@ const ChatScreen = ({ friendId, myId }) => {
       setText("");
       loadMessages();
     } catch (err) {
-      console.log(err);
+      toast.error(err.message)
     }
   };
 
@@ -81,7 +80,7 @@ const ChatScreen = ({ friendId, myId }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
     } catch (err) {
-      console.log(err);
+      toast.error(err.message)
     }
   };
 
