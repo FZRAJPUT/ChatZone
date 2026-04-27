@@ -11,21 +11,33 @@ import msgRouter from './routes/messageRoutes.js';
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(cors());
 
-app.use("/api",userRouter)
-app.use("/api",msgRouter)
+const allowedOrigins = [
+  "http://localhost:8080",
+  "https://chatzone1.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
+app.use("/api", userRouter)
+app.use("/api", msgRouter)
 
 app.get("/", (req, res) => {
-    res.json({ message: "Hello from socket server....." })
+  res.json({ message: "Hello from socket server....." })
 })
 const server = http.createServer(app);
 
 const io = new Server(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "PUT"]
-    }
+  cors: {
+    origin: "*",
+    methods: ["GET", "PUT"]
+  }
 });
 
 io.on("connection", (socket) => {
@@ -63,6 +75,6 @@ io.on("connection", (socket) => {
 const PORT = 4002 || process.env.PORT
 
 server.listen(PORT, () => {
-    connectDB()
-    console.log("Server is running on "+ PORT)
+  connectDB()
+  console.log("Server is running on " + PORT)
 })

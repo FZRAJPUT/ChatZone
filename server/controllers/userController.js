@@ -37,7 +37,7 @@ export const register = async (req, res) => {
 
     let response = await sendOTPEmail(email, otpCode);
 
-    if (!response.success) {
+    if (!response?.success) {
       return res.json({
         message: "Email not Sent...",
         success: false
@@ -51,7 +51,7 @@ export const register = async (req, res) => {
 
   } catch (error) {
     console.error("Register Error:", error.message);
-    return res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({ success: false, message: "Internal server Error" });
   }
 };
 
