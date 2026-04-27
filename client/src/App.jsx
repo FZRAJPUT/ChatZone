@@ -8,6 +8,7 @@ import NotFoundPage from "./pages/NotFound";
 import UserSearch from "./components/UserSearch";
 import FriendRequests from "./components/FriendRequests";
 import OtpScreen from "./components/OtpScreen";
+import Welcome from "./components/WelcomeScreen";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify" element={<OtpScreen />} />
+      <Route path="/Home" element={<Welcome />} />
 
       <Route
         path="/"

@@ -22,7 +22,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const userRouter = express.Router();
 userRouter.post("/register", registerLimiter, register);
-userRouter.post("/login", loginLimiterr, login);
+userRouter.post("/login", loginLimiter, login);
 userRouter.post("/verify", otpLimiter, verifyOTP);
 
 userRouter.get("/get-users", apiLimiter, verifyToken, getAllUser);
